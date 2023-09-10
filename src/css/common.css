@@ -1,0 +1,116 @@
+.breed-select-hiden {
+  display: none;
+}
+.breed-select-activ {
+  display: inline-block;
+  max-width: 350px;
+  margin-left: 25px;
+  font-size: 20px;
+  font-weight: 400;
+}
+
+.select-cat {
+  margin-bottom: 15px;
+  margin-left: 25px;
+  font-size: 20px;
+  font-weight: 600;
+}
+.error{
+  margin: 0;
+}
+.item-brend {
+  font-size: 20px;
+  font-weight: 400;
+}
+.cat-info {
+  display: flex;
+  align-items: flex-start;
+  margin-top: 32px;
+}
+.cat-cards {
+  display: block;
+  width: 800px;
+}
+.cat-mame-title {
+  margin-top: 0;
+  margin-bottom: 10px;
+  padding-top: 10px;
+  font-size: 40px;
+  font-weight: 900;
+}
+.description-cat {
+  margin-bottom: 10px;
+  font-size: 20px;
+  font-weight: 400;
+}
+.cat-temper {
+  display: flex;
+  align-items: flex-start;
+}
+.cat-temper-title {
+  margin-bottom: 10px;
+  margin-right: 10px;
+  font-size: 20px;
+  font-weight: 600;
+}
+.description-temper {
+  font-size: 20px;
+  font-weight: 400;
+}
+.cat-img {
+  object-fit: cover;
+  object-position: center;
+  margin-left: 25px;
+  margin-right: 25px;
+}
+.cat-card-js {
+  display: none;
+}
+.loader {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: block;
+  position: relative;
+  color: #ffffff00;
+  box-sizing: border-box;
+  animation: shadowRolling 2s linear infinite;
+}
+
+@keyframes shadowRolling {
+  0% {
+    box-shadow: 0px 0 rgba(255, 255, 255, 0), 0px 0 rgba(255, 255, 255, 0),
+      0px 0 rgba(255, 255, 255, 0), 0px 0 rgba(255, 255, 255, 0);
+  }
+  12% {
+    box-shadow: 100px 0 black, 0px 0 rgba(255, 255, 255, 0),
+      0px 0 rgba(255, 255, 255, 0), 0px 0 rgba(255, 255, 255, 0);
+  }
+  25% {
+    box-shadow: 110px 0 black, 100px 0 black, 0px 0 rgba(255, 255, 255, 0),
+      0px 0 rgba(255, 255, 255, 0);
+  }
+  36% {
+    box-shadow: 120px 0 black, 110px 0 black, 100px 0 black,
+      0px 0 rgba(255, 255, 255, 0);
+  }
+  50% {
+    box-shadow: 130px 0 black, 120px 0 black, 110px 0 black, 100px 0 black;
+  }
+  62% {
+    box-shadow: 200px 0 rgba(255, 255, 255, 0), 130px 0 black, 120px 0 black,
+      110px 0 black;
+  }
+  75% {
+    box-shadow: 200px 0 rgba(255, 255, 255, 0), 200px 0 rgba(255, 255, 255, 0),
+      130px 0 black, 120px 0 black;
+  }
+  87% {
+    box-shadow: 200px 0 rgba(255, 255, 255, 0), 200px 0 rgba(255, 255, 255, 0),
+      200px 0 rgba(255, 255, 255, 0), 130px 0 black;
+  }
+  100% {
+    box-shadow: 200px 0 rgba(255, 255, 255, 0), 200px 0 rgba(255, 255, 255, 0),
+      200px 0 rgba(255, 255, 255, 0), 200px 0 rgba(255, 255, 255, 0);
+  }
+}

@@ -1,65 +1,96 @@
+import { Notify } from 'notiflix';
 import SlimSelect from 'slim-select';
-import Notiflix, { Notify } from 'notiflix';
-import { fetchBreeds, fetchCatByBreed } from './sass/cat-api';
 import 'slim-select/dist/slimselect.css';
+import { fetchBreeds, fetchCatByBreed } from './cat-api'
+import getRefs from "./get-refs";
 
-const refs = {
-    container: document.querySelector('.container'),
-    select: document.querySelector('.breed-select'),
-    loader: document.querySelector('.loader'),
-    error: document.querySelector('.error'),
-    catInfo: document.querySelector('.cat-info'),
-    catPic: document.querySelector('.cat-info-desc-desc'),
-    catDesc: document.querySelector('.cat-info-desc-temp'),
+const refs = getRefs();
+refs.select.addEventListener("change", setOutput);
+
+fetchBreeds().then(renderCatsBreeds).catch(error => {
+    console.log(error);
+    Notify.failure('Oops! Something went wrong! Try reloading the page!', {
+        timeout: 100000000000000,
+    },);
+    refs.loader.classList.toggle('loader');
+});
+
+function renderCatsBreeds(cats) {
+    const markupSelect = createMarkupViewCat(cats.data);
+    selectIsActive(markupSelect)
+    new SlimSelect({
+        select: '#single'
+    })
 };
 
-refs.select.addEventListener('change', onChangeSelect);
+function selectIsActive(markupSelect) {
+    if (markupSelect) {
+        refs.select.insertAdjacentHTML('beforeend', markupSelect);
+        refs.select.classList.replace('breed-select-hiden','breed-select-activ');
+        refs.loader.classList.toggle('loader');
+        addElementHint()
+    };
+};
 
-function renderSelect(breeds) {
-    const markup = breeds
-        .map(breed => {
-            return `<option value="${breed.reference_image_id}">${breed.name}</option>`;
-        })
-        .join('');
-    refs.select.insertAdjacentHTML('beforeend', markup);
-    new SlimSelect({
-        select: '#single',
+function createMarkupViewCat(cats) {
+    return cats.map(({ id, name }) => {
+        return `<option  class="item-brend" value="${id}">${name}</option>`
+    }).join('');
+};
+
+function addElementHint() {
+    refs.select.after(refs.choiceBreed);
+    refs.choiceBreed.classList.add("select-cat");
+    refs.choiceBreed.textContent = "Please, select a cat brend";
+};
+
+function setOutput(e) {
+    louderCatCardIsActive()
+    fetchCatByBreed(e.target.value).then(renderCatCard).catch(error => {
+        console.log(error);
+        Notify.failure('Oops! Something went wrong! Try reloading the page!', {
+            timeout: 100000000000000,
+        },);
+        refs.loader.classList.toggle('loader');
     });
-}
+};
 
-function renderDesc(breed) {
-    if (breed) {
-        const picture = `<img class="cat-picture" src="${breed.url}" alt="${breed.id}">`;
-        const descript = `<h2 class="cat-info-desc-title">${breed.name}</h2>
-            <p class="cat-info-desc-desc">${breed.description}</p>
-            <p class="cat-info-desc-temp"><b>Temperament:</b> ${breed.temperament}</p>`;
-        refs.catPic.innerHTML = picture;
-        refs.catDesc.innerHTML = descript;
-    } else {
-        refs.catPic.innerHTML = '';
-        refs.catDesc.innerHTML = 'Select a breed to see more information.';
+function renderCatCard(res) {
+    const markupCat = createMarkupDescriptionCat(res.data[0])
+    refs.catInfo.innerHTML = markupCat;
+    louderCatCardNotActive(markupCat)
+};
+
+function louderCatCardIsActive() {
+    refs.catInfo.classList.toggle('cat-card-js');
+    refs.loader.classList.toggle('loader');
+    refs.choiceBreed.remove()
+};
+
+function louderCatCardNotActive(markupCat) {
+    if (markupCat) {
+        refs.catInfo.classList.toggle('cat-card-js');
+        refs.loader.classList.toggle('loader');
     }
-}
+};
 
-window.addEventListener('DOMContentLoaded', onChangeSelect);
+function createMarkupDescriptionCat(cat) {
+    const { url, breeds } = cat;
+    return `  <img class="cat-img" src="${url}" alt="" width="350" height="350">
+    <div class="cat-cards">      <h2 class=" cat-mame-title">
+    ${breeds[0].name}
+  </h2>
+  <p class="description-cat">${breeds[0].description
+        }</p><div class="cat-temper">
+<h3 class="cat-temper-title">
+Temperament:
+</h3>
+<p class="description-temper">${breeds[0].temperament}</p></div></div>`
+};
 
-function onChangeSelect(e) {
-    refs.container.classList.remove('invisible');
-    refs.catInfo.innerHTML = '';
 
-    const breedId = e.target.value;
 
-    if (breedId) {
-        fetchCatByBreed(breedId)
-            .then(breed => {
-                renderDesc(breed);
-            })
-            .catch(error => {
-                console.error(error);
-                Notify.failure('Oops! Something went wrong. Please try again later.');
-            })
-            .finally(() => refs.container.classList.add('invisible'));
-    } else {
-        renderDesc(null);
-    }
-}
+
+
+
+
